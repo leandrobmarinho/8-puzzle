@@ -24,6 +24,8 @@ public class MainBO {
     public ProblemaQC problema;
     public BuscaQC busca;
     public Stack<NoQC> solucao;
+    private Color sucess = new Color(75, 165, 66);
+    private Color error = new Color(255, 165, 0);
 
     public MainBO(QCJFrame view) {
         this.view = view;
@@ -144,12 +146,12 @@ public class MainBO {
             imprimeCaminho((Stack<NoQC>) solucao.clone());
 
             if (this.problema.isObjetivo(solucao.pop().getEstado())) {
-                this.view.getLabelMensagem().setForeground(Color.green);
+                this.view.getLabelMensagem().setForeground(sucess);
                 this.view.getLabelMensagem().setText("Sucesso!");
             }
             
         }else{
-            this.view.getLabelMensagem().setForeground(Color.red);
+            this.view.getLabelMensagem().setForeground(error);
             this.view.getLabelMensagem().setText("Erro!");            
         }
     }
@@ -190,7 +192,7 @@ public class MainBO {
             this.view.getPassoLabel().setText(solucao.size() + "");
 
             if (this.problema.isObjetivo(this.estadoAtual)) {
-                this.view.getLabelMensagem().setForeground(Color.green);
+                this.view.getLabelMensagem().setForeground(sucess);
                 this.view.getLabelMensagem().setText("Sucesso!");
             }
         }
