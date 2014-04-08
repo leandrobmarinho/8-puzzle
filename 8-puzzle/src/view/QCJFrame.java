@@ -251,6 +251,11 @@ public class QCJFrame extends javax.swing.JFrame {
         resolver_btn.setForeground(new java.awt.Color(255, 255, 255));
         resolver_btn.setText("Resolver");
         resolver_btn.setFocusable(false);
+        resolver_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                resolver_btnMouseClicked(evt);
+            }
+        });
         resolver_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resolver_btnActionPerformed(evt);
@@ -530,8 +535,6 @@ public class QCJFrame extends javax.swing.JFrame {
 
     private void resolver_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resolver_btnActionPerformed
         // TODO add your handling code here:        
-        mensagem.setForeground(alert);
-        mensagem.setText("Buscando...");
         this.controller.resolve(busca);
         if (timer != null) {
             timer.stop();
@@ -582,6 +585,12 @@ public class QCJFrame extends javax.swing.JFrame {
          ex.printStackTrace();
          }*/
     }//GEN-LAST:event_play_btnActionPerformed
+
+    private void resolver_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resolver_btnMouseClicked
+        // TODO add your handling code here:
+        mensagem.setForeground(alert);
+        mensagem.setText("Erro!");
+    }//GEN-LAST:event_resolver_btnMouseClicked
 
     /**
      * @param args the command line arguments
