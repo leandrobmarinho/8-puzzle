@@ -6,6 +6,7 @@
 package view;
 
 import controller.MainBO;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
@@ -23,7 +24,7 @@ public class QCJFrame extends javax.swing.JFrame {
     public final int UP = 38;
     public final int RIGHT = 39;
     public final int DOWN = 40;
-
+    private Color alert = new Color(255, 140, 0);
     public String busca;
     private Timer timer = null;
 
@@ -77,26 +78,27 @@ public class QCJFrame extends javax.swing.JFrame {
         }
         return botao;
     }
-    
-    public JLabel getLabelTempo(){
+
+    public JLabel getLabelTempo() {
         return tempo;
     }
-    
-    public JLabel getLabelNumPasso(){
+
+    public JLabel getLabelNumPasso() {
         return numero_passos;
     }
-    
-    public JLabel getPassoLabel(){
+
+    public JLabel getPassoLabel() {
         return passoJLabel;
     }
-    
-    public JLabel getLabelMensagem(){
+
+    public JLabel getLabelMensagem() {
         return mensagem;
     }
 
-    public JList getLista(){
+    public JList getLista() {
         return passos_ls;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -489,14 +491,17 @@ public class QCJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         int tecla = evt.getKeyCode();
-        this.controller.alteraEstado(tecla);
-        this.mensagem.setText("");
-        this.tempo.setText("");
-        this.passoJLabel.setText("");
-        this.numero_passos.setText("");
-        this.step_btn.setEnabled(false);
-        this.play_btn.setEnabled(false);        
-        //limpar os passos
+
+        if (tecla == DOWN || tecla == UP || tecla == RIGHT || tecla == LEFT) {
+            this.controller.alteraEstado(tecla);
+            this.mensagem.setText("");
+            this.tempo.setText("");
+            this.passoJLabel.setText("");
+            this.numero_passos.setText("");
+            this.step_btn.setEnabled(false);
+            this.play_btn.setEnabled(false);
+            //limpar os passos
+        }
 
     }//GEN-LAST:event_formKeyPressed
 
@@ -515,9 +520,9 @@ public class QCJFrame extends javax.swing.JFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
         busca = this.jComboBox1.getModel().getSelectedItem().toString();
-        if (!"-".equals(busca)){
+        if (!"-".equals(busca)) {
             this.resolver_btn.setEnabled(true);
-        }else{
+        } else {
             this.controller.resetar();
             this.resolver_btn.setEnabled(false);
         }
@@ -525,6 +530,8 @@ public class QCJFrame extends javax.swing.JFrame {
 
     private void resolver_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resolver_btnActionPerformed
         // TODO add your handling code here:        
+        mensagem.setForeground(alert);
+        mensagem.setText("Buscando...");
         this.controller.resolve(busca);
         if (timer != null) {
             timer.stop();

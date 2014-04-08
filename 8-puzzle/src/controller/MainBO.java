@@ -21,6 +21,7 @@ public class MainBO {
     public Stack<NoQC> solucao;
     private Color sucess = new Color(75, 165, 66);
     private Color error = new Color(255, 165, 0);
+    private Color alert = new Color(255, 140, 0);
 
     public MainBO(QCJFrame view) {
         this.view = view;
@@ -133,6 +134,7 @@ public class MainBO {
             tf = System.currentTimeMillis();
         }
 
+        this.view.getLabelMensagem().setText("");
         if (solucao != null) {
             //solucao.pop();
             System.out.println(solucao.size());
