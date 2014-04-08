@@ -1,4 +1,4 @@
-package quebra_cabeca;
+package quebracabeca8;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,171 +8,230 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class BuscaQC {
-	private ProblemaQC problema;
-	private List<int[]> visitados;
 
-	public BuscaQC(ProblemaQC problema) {
-		this.problema = problema;
-	}
+    private ProblemaQC problema;
+    private List<int[]> visitados;
+    private int limiteProfundidade = 18;
 
-	public Stack<NoQC> emLargura() {
-		this.visitados = new ArrayList<>();
-		Queue<NoQC> fila = new LinkedList<NoQC>();
+    public BuscaQC(ProblemaQC problema) {
+        this.problema = problema;
+    }
 
-		NoQC no = new NoQC();
-		no.setEstado(problema.getEstadoInicial());
-		fila.add(no);
+    public Stack<NoQC> emLargura() {
+        this.visitados = new ArrayList<>();
+        Queue<NoQC> fila = new LinkedList<>();
 
-		while (!fila.isEmpty()) {
+        NoQC no = new NoQC();
+        no.setEstado(problema.getEstadoInicial());
+        fila.add(no);
 
-			no = fila.poll();
+        while (!fila.isEmpty()) {
+            System.out.println(fila.size() + " Size fila");
+            no = fila.poll();
 
-			if (problema.isObjetivo(no.getEstado())) {
-				return solucao(no);
-			}
+            if (problema.isObjetivo(no.getEstado())) {
+                return solucao(no);
+            }
 
-			fila.addAll(expandir(no));
-		}
+            fila.addAll(expandir(no));
+        }
 
-		return null;
-	}
-	
-	public Stack<NoQC> emProfundidade() {
-		this.visitados = new ArrayList<>();
-		Stack<NoQC> pilha = new Stack<>();
+        return null;
+    }
 
-		NoQC no = new NoQC();
-		no.setEstado(problema.getEstadoInicial());
-		pilha.push(no);
+    public Stack<NoQC> emProfundidade() {
+        this.visitados = new ArrayList<>();
+        Stack<NoQC> pilha = new Stack<>();
 
-		while (!pilha.isEmpty()) {
+        NoQC no = new NoQC();
+        no.setEstado(problema.getEstadoInicial());
+        pilha.push(no);
 
-			no = pilha.pop();
+        while (!pilha.isEmpty()) {
 
-			if (problema.isObjetivo(no.getEstado())) {
-				return solucao(no);
-			}
+            no = pilha.pop();
 
-			pilha.addAll(expandir(no));
-		}
+            if (problema.isObjetivo(no.getEstado())) {
+                return solucao(no);
+            }
 
-		return null;
-	}
-	
-	public Stack<NoQC> gulosa() {
-		this.visitados = new ArrayList<>();
-		Stack<NoQC> pilha = new Stack<>();
+            pilha.addAll(expandir(no));
+        }
 
-		NoQC no = new NoQC();
-		no.setEstado(problema.getEstadoInicial());
-		pilha.push(no);
+        return null;
+    }
 
-		while (!pilha.isEmpty()) {
+    public Stack<NoQC> gulosa() {
+        this.visitados = new ArrayList<>();
+        Stack<NoQC> pilha = new Stack<>();
 
-			no = pilha.pop();
+        NoQC no = new NoQC();
+        no.setEstado(problema.getEstadoInicial());
+        pilha.push(no);
 
-			if (problema.isObjetivo(no.getEstado())) {
-				return solucao(no);
-			}
+        while (!pilha.isEmpty()) {
 
-			pilha.addAll(expandirGulosa(no));
-		}
+            no = pilha.pop();
 
-		return null;
-	}
+            if (problema.isObjetivo(no.getEstado())) {
+                return solucao(no);
+            }
 
-	private List<NoQC> expandirGulosa(NoQC no) {
-		List<NoQC> sucessores = new ArrayList<>();
+            pilha.addAll(expandirGulosa(no));
+        }
 
-		// imprimirArvore(no);
+        return null;
+    }
 
-		this.visitados.add(no.getEstado());
+    public Stack<NoQC> A_Asterisco() {
+        this.visitados = new ArrayList<>();
+        List<NoQC> borda = new ArrayList<>();
 
-		for(int[] sucessor :  problema.getSucerrores(no.getEstado()).get(no.getEstado()) ){								
-			
-			if (!foiVisitado(sucessor)){				
-				
-				NoQC novo = new NoQC();
-				novo.setEstado(sucessor);
-				novo.setPai(no);
-				novo.setProfundidade((no.getProfundidade() + 1));
-				novo.setG(numblocosPosicaoErrada(sucessor));//criterio para ordenar
+        NoQC no = new NoQC();
+        no.setEstado(problema.getEstadoInicial());
+        borda.add(no);
 
-				sucessores.add(novo);
-			}
-		}
-		Collections.sort(sucessores, Collections.reverseOrder());
-		return sucessores;
-	}
-	
-	private List<NoQC> expandir(NoQC no) {
-		List<NoQC> sucessores = new ArrayList<>();
+        while (!borda.isEmpty()) {
 
-		// imprimirArvore(no);
+            //no = borda.remove(borda.size() - 1);
+            no = borda.remove(0);
 
-		this.visitados.add(no.getEstado());
+            if (problema.isObjetivo(no.getEstado())) {
+                return solucao(no);
+            }
 
-		for(int[] sucessor :  problema.getSucerrores(no.getEstado()).get(no.getEstado()) ){								
-			
-			if (!foiVisitado(sucessor)){				
-				
-				NoQC novo = new NoQC();
-				novo.setEstado(sucessor);
-				novo.setPai(no);
-				novo.setProfundidade((no.getProfundidade() + 1));
+            borda.addAll(expandirAsterico(no));
+            //Collections.sort(borda, Collections.reverseOrder());
+            Collections.sort(borda);
+        }
 
-				sucessores.add(novo);
-			}
-		}
-		Collections.shuffle(sucessores);
-		return sucessores;
-	}
-	
-	private Stack<NoQC> solucao(NoQC no) {
-		Stack<NoQC> caminho = new Stack<>();
-		caminho.add(no);
+        return null;
+    }
 
-		NoQC pai = no.getPai();
-		while (pai != null) {
-			caminho.push(pai);
-			pai = pai.getPai();
-		}
+    private List<NoQC> expandirAsterico(NoQC no) {
+        List<NoQC> sucessores = new ArrayList<>();
 
-		return caminho;
-	}
-	
-	private boolean foiVisitado(int[] estado){
-		if (this.visitados.isEmpty())
-			return false;
-		
-		for (int[] visitado : this.visitados){
-			
-			if (igual(visitado,estado))
-				return true;
-		}
-		
-		return false;
-	}
-	
-	private boolean igual(int[] ob1, int[] ob2){
-		
-		for ( int pos = 0; pos < ob1.length; pos++){
-			
-			if (ob1[pos] != ob2[pos])
-				return false;
-		}
-		
-		return true;
-	}
-	
-	private int numblocosPosicaoErrada(int[] estado){
-		int soma = 0;
-		int[] objetivo = this.problema.getEstadoFinal();
-		
-		for (int pos = 0 ; pos < estado.length; pos++){
-			if (objetivo[pos] != estado[pos])
-				soma++;
-		}
-		return soma;
-	}	
+        // imprimirArvore(no);
+        this.visitados.add(no.getEstado());
+
+        for (int[] sucessor : problema.getSucerrores(no.getEstado()).get(no.getEstado())) {
+
+            if (!foiVisitado(sucessor)) {
+
+                NoQC novo = new NoQC();
+                novo.setEstado(sucessor);
+                novo.setPai(no);
+                novo.setProfundidade((no.getProfundidade() + 1));
+                novo.setCusto(no.getCusto() + 1);
+
+                //f(n) = h(n) + g(n)
+                novo.setComparador( numblocosPosicaoErrada(sucessor) + ( no.getCusto() + 1 ) );//criterio para ordenar
+
+                sucessores.add(novo);
+            }
+        }
+        return sucessores;
+    }
+
+    private List<NoQC> expandirGulosa(NoQC no) {
+        List<NoQC> sucessores = new ArrayList<>();
+
+        // imprimirArvore(no);
+        this.visitados.add(no.getEstado());
+
+        for (int[] sucessor : problema.getSucerrores(no.getEstado()).get(no.getEstado())) {
+
+            if (!foiVisitado(sucessor)) {
+
+                NoQC novo = new NoQC();
+                novo.setEstado(sucessor);
+                novo.setPai(no);
+                novo.setProfundidade((no.getProfundidade() + 1));
+                novo.setComparador(numblocosPosicaoErrada(sucessor));//criterio para ordenar
+
+                sucessores.add(novo);
+            }
+        }
+        Collections.sort(sucessores, Collections.reverseOrder());
+        return sucessores;
+    }
+
+    private List<NoQC> expandir(NoQC no) {
+        List<NoQC> sucessores = new ArrayList<>();
+
+        // imprimirArvore(no);
+        this.visitados.add(no.getEstado());
+        System.out.println(no.getProfundidade() + " PROF.");
+
+        if (no.getProfundidade() <= limiteProfundidade) {
+
+            for (int[] sucessor : problema.getSucerrores(no.getEstado()).get(no.getEstado())) {
+
+                if (!foiVisitado(sucessor)) {
+
+                    NoQC novo = new NoQC();
+                    novo.setEstado(sucessor);
+                    novo.setPai(no);
+                    novo.setProfundidade((no.getProfundidade() + 1));
+
+                    sucessores.add(novo);
+                }
+            }
+            Collections.shuffle(sucessores);
+        }
+        return sucessores;
+    }
+
+    private Stack<NoQC> solucao(NoQC no) {
+        Stack<NoQC> caminho = new Stack<>();
+        caminho.add(no);
+
+        NoQC pai = no.getPai();
+        while (pai != null) {
+            caminho.push(pai);
+            pai = pai.getPai();
+        }
+
+        return caminho;
+    }
+
+    private boolean foiVisitado(int[] estado) {
+        if (this.visitados.isEmpty()) {
+            return false;
+        }
+
+        for (int[] visitado : this.visitados) {
+
+            if (igual(visitado, estado)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean igual(int[] ob1, int[] ob2) {
+
+        for (int pos = 0; pos < ob1.length; pos++) {
+
+            if (ob1[pos] != ob2[pos]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    
+    private int numblocosPosicaoErrada(int[] estado) {
+        int soma = 0;
+        int[] objetivo = this.problema.getEstadoFinal();
+
+        for (int pos = 0; pos < estado.length; pos++) {
+            if (objetivo[pos] != estado[pos]) {
+                soma++;
+            }
+        }
+        return soma;
+    }
+
 }

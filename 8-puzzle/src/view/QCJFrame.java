@@ -233,7 +233,7 @@ public class QCJFrame extends javax.swing.JFrame {
         jLabel8.setPreferredSize(new java.awt.Dimension(74, 74));
 
         jComboBox1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-", "Gulosa", "Largura", "Profundidade" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-", "A*", "Largura", "Profundidade" }));
         jComboBox1.setFocusable(false);
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

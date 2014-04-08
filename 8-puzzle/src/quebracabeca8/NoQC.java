@@ -1,12 +1,12 @@
-package quebra_cabeca;
+package quebracabeca8;
 
 
 public class NoQC implements Comparable<NoQC>{
 	private int[] estado;
 	private NoQC pai = null;
 	private int profundidade = 0;
-	private double custo = 0.0;
-	private int g = 0;
+	private int custo = 0;
+	private int comparador = 0;
 	
 	public int[] getEstado() {
 		return estado;
@@ -26,18 +26,18 @@ public class NoQC implements Comparable<NoQC>{
 	public void setProfundidade(int profundidade) {
 		this.profundidade = profundidade;
 	}
-	public double getCusto() {
+	public int getCusto() {
 		return custo;
 	}
-	public void setCusto(double custo) {
+	public void setCusto(int custo) {
 		this.custo = custo;
 	}	
 	
-	public int getG() {
-		return g;
+	public int getComparador() {
+		return comparador;
 	}
-	public void setG(int g) {
-		this.g = g;
+	public void setComparador(int g) {
+		this.comparador = g;
 	}
 	public String toString(){
 		String valor = "";
@@ -52,7 +52,7 @@ public class NoQC implements Comparable<NoQC>{
 
 	@Override
 	public int compareTo(NoQC o) {
-		if (this.g < o.getG()){
+		if (this.comparador < o.getComparador()){
 			return -1;
 		}else{
 			return 1;

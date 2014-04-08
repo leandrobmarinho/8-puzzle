@@ -1,16 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.awt.Color;
 import java.util.Stack;
 import javax.swing.DefaultListModel;
-import quebra_cabeca.BuscaQC;
-import quebra_cabeca.NoQC;
-import quebra_cabeca.ProblemaQC;
+import quebracabeca8.BuscaQC;
+import quebracabeca8.NoQC;
+import quebracabeca8.ProblemaQC;
 import view.QCJFrame;
 
 /**
@@ -131,10 +126,10 @@ public class MainBO {
             ti = System.currentTimeMillis();
             solucao = this.busca.emProfundidade();
             tf = System.currentTimeMillis();
-        } else if ("Gulosa".equals(busca)) {
+        } else if ("A*".equals(busca)) {
             System.out.println("== Busca Gulosa==");
             ti = System.currentTimeMillis();
-            solucao = this.busca.gulosa();
+            solucao = this.busca.A_Asterisco();
             tf = System.currentTimeMillis();
         }
 

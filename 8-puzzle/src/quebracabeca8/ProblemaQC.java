@@ -1,4 +1,4 @@
-package quebra_cabeca;
+package quebracabeca8;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -122,7 +122,7 @@ public class ProblemaQC {
 		Collections.shuffle(posicoes);
 		System.out.println(posicoes);
 		
-		//Sorteia o número de tentativa de mudanca
+		//Sorteia o nï¿½mero de tentativa de mudanca
 		int num = 1 + (int) (Math.random() * 100);
 		int i = 0;
 		while (i<num){
