@@ -128,9 +128,14 @@ public class MainBO {
             solucao = this.busca.emProfundidade();
             tf = System.currentTimeMillis();
         } else if ("A*".equals(busca)) {
-            System.out.println("== Busca Gulosa==");
+            System.out.println("== Busca A*==");
             ti = System.currentTimeMillis();
             solucao = this.busca.A_Asterisco();
+            tf = System.currentTimeMillis();
+        } else if ("Gulosa".equals(busca)) {
+            System.out.println("== Busca Gulosa==");
+            ti = System.currentTimeMillis();
+            solucao = this.busca.gulosa();
             tf = System.currentTimeMillis();
         }
 
