@@ -11,7 +11,7 @@ public class BuscaQC {
 
     private ProblemaQC problema;
     private List<int[]> visitados;
-    private int limiteProfundidade = 18;
+    private int limiteProfundidade = 22;
 
     public BuscaQC(ProblemaQC problema) {
         this.problema = problema;

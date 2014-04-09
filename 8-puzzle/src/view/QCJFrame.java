@@ -9,6 +9,8 @@ import controller.MainBO;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.Timer;
@@ -79,6 +81,7 @@ public class QCJFrame extends javax.swing.JFrame {
         return botao;
     }
 
+
     public JLabel getLabelTempo() {
         return tempo;
     }
@@ -97,6 +100,23 @@ public class QCJFrame extends javax.swing.JFrame {
 
     public JList getLista() {
         return passos_ls;
+    }
+    
+    public JButton getBotaoResolver(){
+        return resolver_btn;
+    }
+    
+    public JButton getBotaoStep(){
+        return step_btn;
+    }
+
+    public JButton getBotaoPlay(){
+        return play_btn;
+    }
+    
+    private void msg_carregando() {
+        mensagem.setForeground(alert);
+        mensagem.setText("Carregando...");
     }
 
     /**
@@ -124,7 +144,7 @@ public class QCJFrame extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         resolver_btn = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton2 = new javax.swing.JButton();
+        limpar_btn = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         numero_passos = new javax.swing.JLabel();
@@ -145,6 +165,9 @@ public class QCJFrame extends javax.swing.JFrame {
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
             }
         });
 
@@ -255,6 +278,18 @@ public class QCJFrame extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 resolver_btnMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                resolver_btnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                resolver_btnMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                resolver_btnMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                resolver_btnMouseReleased(evt);
+            }
         });
         resolver_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -264,14 +299,14 @@ public class QCJFrame extends javax.swing.JFrame {
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jButton2.setBackground(new java.awt.Color(255, 204, 51));
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Resetar");
-        jButton2.setFocusable(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        limpar_btn.setBackground(new java.awt.Color(255, 204, 51));
+        limpar_btn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        limpar_btn.setForeground(new java.awt.Color(255, 255, 255));
+        limpar_btn.setText("Resetar");
+        limpar_btn.setFocusable(false);
+        limpar_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                limpar_btnActionPerformed(evt);
             }
         });
 
@@ -343,7 +378,7 @@ public class QCJFrame extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(resolver_btn)
                                 .addGap(20, 20, 20)
-                                .addComponent(jButton2))
+                                .addComponent(limpar_btn))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addGap(54, 54, 54)
@@ -380,7 +415,7 @@ public class QCJFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(resolver_btn)
-                                    .addComponent(jButton2))
+                                    .addComponent(limpar_btn))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -499,23 +534,18 @@ public class QCJFrame extends javax.swing.JFrame {
 
         if (tecla == DOWN || tecla == UP || tecla == RIGHT || tecla == LEFT) {
             this.controller.alteraEstado(tecla);
-            this.mensagem.setText("");
-            this.tempo.setText("");
-            this.passoJLabel.setText("");
-            this.numero_passos.setText("");
-            this.step_btn.setEnabled(false);
-            this.play_btn.setEnabled(false);
-            //limpar os passos
+
+            this.controller.limpar();
         }
 
     }//GEN-LAST:event_formKeyPressed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void limpar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpar_btnActionPerformed
         this.controller.resetar();
         if (timer != null) {
             timer.stop();
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_limpar_btnActionPerformed
 
     private void step_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_step_btnActionPerformed
         // TODO add your handling code here:
@@ -535,12 +565,7 @@ public class QCJFrame extends javax.swing.JFrame {
 
     private void resolver_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resolver_btnActionPerformed
         // TODO add your handling code here:        
-        this.controller.resolve(busca);
-        if (timer != null) {
-            timer.stop();
-        }
-        this.step_btn.setEnabled(true);
-        this.play_btn.setEnabled(true);
+
     }//GEN-LAST:event_resolver_btnActionPerformed
 
     class MyActionListener implements ActionListener {
@@ -556,11 +581,11 @@ public class QCJFrame extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             String text = String.valueOf(counter);
 
-            //this.view.getTecla(7).setText(text);
             this.view.controller.acao();
 
         }
     }
+
 
     private void play_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_play_btnActionPerformed
         // TODO add your handling code here:
@@ -570,27 +595,40 @@ public class QCJFrame extends javax.swing.JFrame {
         timer.setInitialDelay(0);
         timer.start();
 
-
-        /*
-         try {
-
-         while (!this.controller.solucao.isEmpty()) {
-
-         //Thread.sleep(2000);
-         this.controller.acao();
-         Thread.sleep(3000);
-         }
-
-         } catch (InterruptedException ex) {
-         ex.printStackTrace();
-         }*/
     }//GEN-LAST:event_play_btnActionPerformed
 
     private void resolver_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resolver_btnMouseClicked
         // TODO add your handling code here:
-        mensagem.setForeground(alert);
-        mensagem.setText("Erro!");
+
     }//GEN-LAST:event_resolver_btnMouseClicked
+
+    private void resolver_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resolver_btnMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_resolver_btnMouseExited
+
+    private void resolver_btnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resolver_btnMousePressed
+        // TODO add your handling code here:        
+        msg_carregando();
+    }//GEN-LAST:event_resolver_btnMousePressed
+
+    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+        // TODO add your handling code here:
+        //System.out.println(evt.getKeyCode());
+    }//GEN-LAST:event_formKeyTyped
+
+    private void resolver_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resolver_btnMouseEntered
+        // TODO add your handling code here:        
+    }//GEN-LAST:event_resolver_btnMouseEntered
+
+    private void resolver_btnMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resolver_btnMouseReleased
+        // TODO add your handling code here:        
+        this.controller.resolve(busca);
+        if (timer != null) {
+            timer.stop();
+        }
+        this.step_btn.setEnabled(true);
+        this.play_btn.setEnabled(true);
+    }//GEN-LAST:event_resolver_btnMouseReleased
 
     /**
      * @param args the command line arguments
@@ -628,7 +666,6 @@ public class QCJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel0;
     private javax.swing.JLabel jLabel1;
@@ -652,6 +689,7 @@ public class QCJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JButton limpar_btn;
     private javax.swing.JLabel mensagem;
     private javax.swing.JLabel numero_passos;
     private javax.swing.JLabel passoJLabel;

@@ -205,9 +205,16 @@ public class MainBO {
             estadoAtual[pos] = pos;
         }
 
+        limpar();
+    }
+    
+    public void limpar(){
         this.view.getLabelMensagem().setText("");
         this.view.getLabelTempo().setText("");
         this.view.getLabelNumPasso().setText("");
         this.view.getPassoLabel().setText("");
+        this.view.getLista().setModel(new DefaultListModel());
+        this.view.getBotaoStep().setEnabled(false);
+        this.view.getBotaoPlay().setEnabled(false);
     }
 }
