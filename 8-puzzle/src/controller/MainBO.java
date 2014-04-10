@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.Color;
 import java.util.Stack;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import quebracabeca8.BuscaQC;
 import quebracabeca8.NoQC;
@@ -22,6 +23,9 @@ public class MainBO {
     private Color sucess = new Color(75, 165, 66);
     private Color error = new Color(255, 165, 0);
     private Color alert = new Color(255, 140, 0);
+    private Color verde = new Color(72, 201, 66);
+    private Color preto = new Color(0, 0, 0);
+    private Color branco = new Color(255, 255, 255);
 
     public MainBO(QCJFrame view) {
         this.view = view;
@@ -37,6 +41,11 @@ public class MainBO {
             for (int pos = 0; pos < estadoAtual.length; pos++) {
                 if ((pos != 0) && (pos != 1) && (pos != 2)) {
                     if ((estadoAtual[pos - 3] == 0)) {
+
+                        view.getTecla(pos - 3).setBorder(BorderFactory.createLineBorder(branco));
+                        view.getTecla(pos - 3).setBackground(verde);
+                        view.getTecla(pos).setBorder(BorderFactory.createLineBorder(preto));
+                        view.getTecla(pos).setBackground(preto);
 
                         view.getTecla(pos - 3).setText(estadoAtual[pos] + "");
                         view.getTecla(pos).setText("");
@@ -54,6 +63,11 @@ public class MainBO {
                 if ((pos != 6) && (pos != 7) && (pos != 8)) {
                     if ((estadoAtual[pos + 3] == 0)) {
 
+                        view.getTecla(pos + 3).setBorder(BorderFactory.createLineBorder(branco));
+                        view.getTecla(pos + 3).setBackground(verde);
+                        view.getTecla(pos).setBorder(BorderFactory.createLineBorder(preto));
+                        view.getTecla(pos).setBackground(preto);
+
                         view.getTecla(pos + 3).setText(estadoAtual[pos] + "");
                         view.getTecla(pos).setText("");
 
@@ -70,6 +84,11 @@ public class MainBO {
                 if ((pos != 2) && (pos != 5) && (pos != 8)) {
                     if ((estadoAtual[pos + 1] == 0)) {
 
+                        view.getTecla(pos + 1).setBorder(BorderFactory.createLineBorder(branco));
+                        view.getTecla(pos + 1).setBackground(verde);
+                        view.getTecla(pos).setBorder(BorderFactory.createLineBorder(preto));
+                        view.getTecla(pos).setBackground(preto);
+
                         view.getTecla(pos + 1).setText(estadoAtual[pos] + "");
                         view.getTecla(pos).setText("");
 
@@ -85,6 +104,11 @@ public class MainBO {
             for (int pos = 0; pos < estadoAtual.length; pos++) {
                 if ((pos != 0) && (pos != 3) && (pos != 6)) {
                     if ((estadoAtual[pos - 1] == 0)) {
+
+                        view.getTecla(pos - 1).setBorder(BorderFactory.createLineBorder(branco));
+                        view.getTecla(pos - 1).setBackground(verde);
+                        view.getTecla(pos).setBorder(BorderFactory.createLineBorder(preto));
+                        view.getTecla(pos).setBackground(preto);
 
                         view.getTecla(pos - 1).setText(estadoAtual[pos] + "");
                         view.getTecla(pos).setText("");
@@ -151,10 +175,10 @@ public class MainBO {
                 this.view.getLabelMensagem().setForeground(sucess);
                 this.view.getLabelMensagem().setText("Sucesso!");
             }
-            
-        }else{
+
+        } else {
             this.view.getLabelMensagem().setForeground(error);
-            this.view.getLabelMensagem().setText("Erro!");            
+            this.view.getLabelMensagem().setText("Erro!");
         }
     }
 
@@ -185,9 +209,15 @@ public class MainBO {
             String valor;
             for (int pos = 0; pos < 9; pos++) {
 
-                valor = (no.getEstado()[pos] == 0) ? "" : (no.getEstado()[pos] + "");
-
-                view.getTecla(pos).setText(valor);
+                if (no.getEstado()[pos] == 0) {
+                    view.getTecla(pos).setBorder(BorderFactory.createLineBorder(preto));
+                    view.getTecla(pos).setBackground(preto);
+                    view.getTecla(pos).setText("");
+                } else {
+                    view.getTecla(pos).setBorder(BorderFactory.createLineBorder(branco));
+                    view.getTecla(pos).setBackground(verde);
+                    view.getTecla(pos).setText(no.getEstado()[pos] + "");
+                }
 
                 estadoAtual[pos] = no.getEstado()[pos];
             }
@@ -205,15 +235,25 @@ public class MainBO {
         String valor;
 
         for (int pos = 0; pos < 9; pos++) {
-            valor = (pos == 0) ? "" : (pos + "");
-            view.getTecla(pos).setText(valor);
+            if (pos == 0) {
+                view.getTecla(pos).setBorder(BorderFactory.createLineBorder(preto));
+                view.getTecla(pos).setBackground(preto);
+                view.getTecla(pos).setText("");
+            } else {
+                view.getTecla(pos).setBorder(BorderFactory.createLineBorder(branco));
+                view.getTecla(pos).setBackground(verde);
+                view.getTecla(pos).setText(pos + "");
+            }
+
+            //valor = (pos == 0) ? "" : (pos + "");
+            //view.getTecla(pos).setText(valor);
             estadoAtual[pos] = pos;
         }
 
         limpar();
     }
-    
-    public void limpar(){
+
+    public void limpar() {
         this.view.getLabelMensagem().setText("");
         this.view.getLabelTempo().setText("");
         this.view.getLabelNumPasso().setText("");

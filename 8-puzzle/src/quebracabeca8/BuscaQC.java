@@ -12,6 +12,10 @@ public class BuscaQC {
     private ProblemaQC problema;
     private List<int[]> visitados;
     private int limiteProfundidade = 22;
+    private final int LARG = 0;
+    private final int PROF = 1;
+    private final int limitePROF = 25;
+    private final int limiteLARG = 20;
 
     public BuscaQC(ProblemaQC problema) {
         this.problema = problema;
@@ -33,7 +37,7 @@ public class BuscaQC {
                 return solucao(no);
             }
 
-            fila.addAll(expandir(no));
+            fila.addAll(expandir(no, LARG));
         }
 
         return null;
@@ -55,7 +59,7 @@ public class BuscaQC {
                 return solucao(no);
             }
 
-            pilha.addAll(expandir(no));
+            pilha.addAll(expandir(no, PROF));
         }
 
         return null;
@@ -156,14 +160,15 @@ public class BuscaQC {
         return sucessores;
     }
 
-    private List<NoQC> expandir(NoQC no) {
+    private List<NoQC> expandir(NoQC no, int tipo) {
         List<NoQC> sucessores = new ArrayList<>();
 
         // imprimirArvore(no);
         this.visitados.add(no.getEstado());
         System.out.println(no.getProfundidade() + " PROF.");
 
-        if (no.getProfundidade() <= limiteProfundidade) {
+        if ( (no.getProfundidade() <= limitePROF && tipo == PROF ) || 
+                (no.getProfundidade() <= limiteLARG && tipo == LARG ) ) {
 
             for (int[] sucessor : problema.getSucerrores(no.getEstado()).get(no.getEstado())) {
 
@@ -193,6 +198,19 @@ public class BuscaQC {
         }
 
         return caminho;
+    }    
+    
+    //heuristica
+    private int numblocosPosicaoErrada(int[] estado) {
+        int soma = 0;
+        int[] objetivo = this.problema.getEstadoFinal();
+
+        for (int pos = 0; pos < estado.length; pos++) {
+            if (objetivo[pos] != estado[pos]) {
+                soma++;
+            }
+        }
+        return soma;
     }
 
     private boolean foiVisitado(int[] estado) {
@@ -221,17 +239,4 @@ public class BuscaQC {
 
         return true;
     }
-    
-    private int numblocosPosicaoErrada(int[] estado) {
-        int soma = 0;
-        int[] objetivo = this.problema.getEstadoFinal();
-
-        for (int pos = 0; pos < estado.length; pos++) {
-            if (objetivo[pos] != estado[pos]) {
-                soma++;
-            }
-        }
-        return soma;
-    }
-
 }
