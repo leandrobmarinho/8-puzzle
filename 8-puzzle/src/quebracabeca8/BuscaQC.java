@@ -15,7 +15,7 @@ public class BuscaQC {
     private final int LARG = 0;
     private final int PROF = 1;
     private final int limitePROF = 25;
-    private final int limiteLARG = 20;
+    private final int limiteLARG = 18;
 
     public BuscaQC(ProblemaQC problema) {
         this.problema = problema;
@@ -97,7 +97,6 @@ public class BuscaQC {
 
         while (!borda.isEmpty()) {
 
-            //no = borda.remove(borda.size() - 1);
             no = borda.remove(0);
 
             if (problema.isObjetivo(no.getEstado())) {
@@ -105,7 +104,6 @@ public class BuscaQC {
             }
 
             borda.addAll(expandirAsterico(no));
-            //Collections.sort(borda, Collections.reverseOrder());
             Collections.sort(borda);
         }
 

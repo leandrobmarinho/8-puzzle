@@ -39,6 +39,8 @@ public class NoQC implements Comparable<NoQC>{
 	public void setComparador(int g) {
 		this.comparador = g;
 	}
+        
+        @Override
 	public String toString(){
 		String valor = "";
 		for(int i = 0 ; i < estado.length; i++){
